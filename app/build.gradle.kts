@@ -5,11 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.finalproject"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.finalproject"
@@ -40,6 +36,8 @@ android {
 }
 
 dependencies {
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
