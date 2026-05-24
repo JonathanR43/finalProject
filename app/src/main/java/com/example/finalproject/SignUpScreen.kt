@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun LoginScreen()
+fun SignUpScreen()
 {
     var correo by remember { mutableStateOf("") }
 
@@ -122,6 +122,30 @@ fun LoginScreen()
                 .clip(RoundedCornerShape(10.dp))
         )
 
+        Spacer(modifier = Modifier.height(19.dp))
+
+        //Cambiar por CustomTextField
+        Text(
+            "Repetir Contraseña",
+            textAlign = TextAlign.Left,
+            style = TextStyle(
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                fontSize = 15.sp
+            ),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(5.dp))
+
+        TextField(
+            value = correo,
+            onValueChange = { correo = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+        )
+
         Spacer(modifier = Modifier.height(57.dp))
 
         //Cambiar por CustomButton
@@ -146,7 +170,7 @@ fun LoginScreen()
             )
         }
 
-        Spacer(modifier = Modifier.height(201.dp))
+        Spacer(modifier = Modifier.height(117.dp))
 
         Row(
             modifier = Modifier
@@ -155,7 +179,7 @@ fun LoginScreen()
         )
         {
             Text(
-                "No tienes una cuenta?",
+                "Ya estás registrado?",
                 style = TextStyle(
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
@@ -173,7 +197,7 @@ fun LoginScreen()
                 modifier = Modifier.height(22.dp)
             ) {
                 Text(
-                    text = "Registrate",
+                    text = "Iniciar Sesión",
                     color = Color(0xFF0453FF),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold
@@ -185,7 +209,7 @@ fun LoginScreen()
 
 @Preview (device = "spec:width=440dp,height=956dp,dpi=420")
 @Composable
-fun LoginScreenPreview()
+fun SignUpScreenPreview()
 {
-    LoginScreen()
+    SignUpScreen()
 }
