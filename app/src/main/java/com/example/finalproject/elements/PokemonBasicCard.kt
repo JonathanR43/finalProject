@@ -29,9 +29,9 @@ fun PokemonCardVisuals(
 {
     Column(
         modifier = Modifier
-            .clip(RoundedCornerShape(25.dp))
-            .width(180.dp)
-            .height(180.dp)
+            .clip(RoundedCornerShape(15.dp))
+            .width(165.dp)
+            .height(165.dp)
             .background(color = Color(0xFF3F93D1))
             .padding(5.dp),
         verticalArrangement = Arrangement.Center,
@@ -60,9 +60,7 @@ fun PokemonCardVisuals(
             )
         }
 
-        Spacer(modifier = Modifier
-                    .height(15.dp)
-        )
+        Spacer(modifier = Modifier.height(15.dp))
 
         Text(
             name,
@@ -79,7 +77,7 @@ fun PokemonCardVisuals(
 }
 
 @Preview(showBackground = true,
-         device = "spec:width=402dp,height=874dp,dpi=420"
+         device = "spec:width=440dp,height=956dp,dpi=420"
         )
 @Composable
 fun PokeCardPreview() {
