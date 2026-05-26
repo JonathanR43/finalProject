@@ -2,6 +2,7 @@ package com.example.finalproject.elements
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.material3.Text
@@ -21,58 +22,72 @@ import coil.compose.AsyncImage
 import com.example.finalproject.R
 
 @Composable
-fun PokemonCardVisuals(
-    name: String,
+fun PokemonCard(
+    name: String? = null,
     imageUrl: String? = null,
-    localImageRes: Int? = null
 )
 {
     Column(
-        modifier = Modifier
-            .clip(RoundedCornerShape(15.dp))
-            .width(165.dp)
-            .height(165.dp)
-            .background(color = Color(0xFF3F93D1))
-            .padding(5.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .clip(RoundedCornerShape(15.dp))
+            .fillMaxWidth()
+            .height(165.dp)
+            .background(color = Color(0xFF3F93D1))
+            .padding(5.dp)
+            .clickable
+            {
+
+            }
     )
     {
-        if(localImageRes != null)
-        {
-            //Imagen local (El preview no muestra imagenes con url)
+        if (imageUrl.isNullOrBlank()) {
             Image(
-                painter = painterResource(id = localImageRes),
+                painter = painterResource(R.drawable.icon),
                 contentDescription = "Imagen local",
-                modifier = Modifier
-                    .height(100.dp)
-                    .width(200.dp)
+                modifier = Modifier.size(100.dp)
             )
-        }
-        else if(imageUrl != null)
-        {
-            //Imagen con url
+        } else {
             AsyncImage(
                 model = imageUrl,
-                contentDescription = "Imagen de PÃ³kemon",
-                modifier = Modifier
-                    .weight(0.5f)
+                contentDescription = "Imagen de Pokémon",
+                modifier = Modifier.size(100.dp),
+                placeholder = painterResource(R.drawable.icon),
+                error = painterResource(R.drawable.icon)
             )
         }
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        Text(
-            name,
-            textAlign = TextAlign.Center,
-            style = TextStyle(
-                color = Color.Black,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-        )
+        if(name != null)
+        {
+            Text(
+                name,
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    color = Color.Black,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+        }
+        else
+        {
+            Text(
+                "Not Found",
+                textAlign = TextAlign.Center,
+                style = TextStyle(
+                    color = Color.Black,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+        }
     }
 }
 
@@ -82,7 +97,6 @@ fun PokemonCardVisuals(
 @Composable
 fun PokeCardPreview() {
     var pokemonName by remember { mutableStateOf("Charizard") }
-    var pokemonImage by remember { mutableStateOf(R.drawable.icon) }
 
-    PokemonCardVisuals(name = pokemonName, localImageRes = pokemonImage)
+    PokemonCard(name = pokemonName)
 }
