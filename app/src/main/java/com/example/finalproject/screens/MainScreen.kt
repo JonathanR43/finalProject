@@ -1,8 +1,7 @@
-package com.example.finalproject
+package com.example.finalproject.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,7 +28,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.finalproject.elements.PokemonCard
+import com.example.finalproject.R
+import com.example.finalproject.components.CustomSearchBar
+import com.example.finalproject.components.PokemonCard
 
 @Composable
 fun MainScreen(navController: NavController)
@@ -49,7 +50,7 @@ fun MainScreen(navController: NavController)
         Spacer(modifier = Modifier.height(38.dp))
 
         Image(
-            painterResource(R.drawable.logo),
+            painterResource(R.drawable.titulo),
             contentDescription = "Imagen Local",
             modifier = Modifier
                 .height(68.dp)
@@ -58,22 +59,7 @@ fun MainScreen(navController: NavController)
 
         Spacer(modifier = Modifier.height(28.dp))
 
-        //Reemplazar con CustomTextfield
-        TextField(
-            value = "",
-            onValueChange = {},
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Filled.Search,
-                    contentDescription = "Buscar",
-                    tint = Color.Gray
-                )
-            },
-            placeholder = {Text("Buscar pokémon...")},
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp)),
-        )
+        CustomSearchBar("") { }
 
         Spacer(modifier = Modifier.height(16.dp))
 
