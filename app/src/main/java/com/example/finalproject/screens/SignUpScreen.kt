@@ -36,6 +36,9 @@ import com.example.finalproject.R
 import com.example.finalproject.components.CustomButton
 import com.example.finalproject.components.CustomInput
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
 @Composable
 fun SignUpScreen(navController: NavController)
@@ -140,9 +143,18 @@ fun SignUpScreen(navController: NavController)
                                     isSuccess = true
                                     isError = false
                                 } else {
-                                    feedbackMessage = task.exception?.message ?: "Error al registrar"
+                                    feedbackMessage = when (task.exception) {
+                                        is FirebaseAuthUserCollisionException ->
+                                            "Este correo ya está registrado."
+                                        is FirebaseAuthWeakPasswordException ->
+                                            "La contraseña es muy débil. Por favor, ingresa al menos 6 caracteres."
+                                        is FirebaseAuthInvalidCredentialsException ->
+                                            "El correo no es válido, asegurate de poner el formato correcto."
+                                        else ->
+                                            "Error al iniciar sesión"
+                                    }
                                     isError = true
-                                    isSuccess = false
+                                    isSuccess  = false
                                 }
                             }
                     }
