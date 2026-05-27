@@ -1,5 +1,6 @@
 package com.example.finalproject.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,6 +35,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.finalproject.R
 import com.example.finalproject.components.CustomButton
 import com.example.finalproject.components.CustomInput
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun SignUpScreen(navController: NavController)
@@ -42,6 +44,9 @@ fun SignUpScreen(navController: NavController)
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
+    var feedbackMessage by remember { mutableStateOf("") }
+    var isError by remember { mutableStateOf(false) }
+    var isSuccess by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -86,7 +91,7 @@ fun SignUpScreen(navController: NavController)
         CustomInput(
             label = R.string.label_email,
             value = email,
-            onValueChange = { email = it },
+            onValueChange = { email = it; isError = false },
             placeHolder = R.string.placeholder_email,
             isPassword = false
         )
@@ -96,7 +101,7 @@ fun SignUpScreen(navController: NavController)
         CustomInput (
             label = R.string.label_password,
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { password = it; isError = false },
             placeHolder = R.string.placeholder_password,
             isPassword = true
         )
@@ -106,7 +111,7 @@ fun SignUpScreen(navController: NavController)
         CustomInput (
             label = R.string.label_confirm_password,
             value = confirmPassword,
-            onValueChange = { confirmPassword = it },
+            onValueChange = { confirmPassword = it; isError = false },
             placeHolder = R.string.placeholder_password,
             isPassword = true
         )
@@ -114,9 +119,49 @@ fun SignUpScreen(navController: NavController)
         Spacer(modifier = Modifier.height(50.dp))
 
         CustomButton(
-            onClick = {},
+            onClick = {
+                when {
+                    email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() -> {
+                        feedbackMessage = "Todos los campos son obligatorios"
+                        isError = true
+                        isSuccess = false
+                    }
+                    password != confirmPassword -> {
+                        feedbackMessage = "Las contraseñas no coinciden"
+                        isError = true
+                        isSuccess = false
+                    }
+                    else -> {
+                        isError = false
+                        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    feedbackMessage = "¡Usuario registrado con éxito! Ya puedes dirigirte a Iniciar Sesión."
+                                    isSuccess = true
+                                    isError = false
+                                } else {
+                                    feedbackMessage = task.exception?.message ?: "Error al registrar"
+                                    isError = true
+                                    isSuccess = false
+                                }
+                            }
+                    }
+                }
+            },
             text = R.string.button_signup
         )
+        if (isError || isSuccess) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = feedbackMessage,
+                color = if (isError) Color.Yellow else Color(0xFF00FFCC),
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
         Spacer(modifier = Modifier.height(40.dp))
 
         Row(
