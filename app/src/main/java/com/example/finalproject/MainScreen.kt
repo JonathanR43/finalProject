@@ -75,13 +75,6 @@ fun MainScreen(navController: NavController)
                 .clip(RoundedCornerShape(10.dp)),
         )
 
-        //BOTON DE PRUEBA, BORRAR CUANDO SE IMPLEMENTE EL CONSUMO DE LA API
-        Button(onClick = {
-            pokemonList = pokemonList + Pair("Charizard", "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png")
-        }) {
-            Text("Añadir Pokémon")
-        }
-
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyVerticalGrid(
