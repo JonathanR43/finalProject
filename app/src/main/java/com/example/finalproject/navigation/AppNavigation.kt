@@ -22,7 +22,7 @@ fun AppNavigation(){
         composable("signup"){
             SignUpScreen(navController)
         }
-        composable("main") {
+        composable("home") {
             MainScreen(navController)
         }
     }
