@@ -2,4 +2,16 @@
 <resources>
 
     <style name="Theme.FinalProject" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+
+        <item name="windowSplashScreenBackground">#FE4D4D</item>
+
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_icon_compuesto</item>
+
+        <item name="windowSplashScreenAnimationDuration">200</item>
+
+        <item name="postSplashScreenTheme">@style/Theme.FinalProject</item>
+
+    </style>
 </resources>
