@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">finalProject</string>
+    <string name="app_name">PokeWorld</string>
     <string name="label_email">Correo Electrónico</string>
     <string name="label_password">Contraseña</string>
     <string name="placeholder_email">Ejemplo@correo.com</string>

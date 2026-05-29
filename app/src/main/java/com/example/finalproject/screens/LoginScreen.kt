@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -29,13 +30,19 @@ import androidx.navigation.compose.rememberNavController
 import com.example.finalproject.R
 import com.example.finalproject.components.CustomButton
 import com.example.finalproject.components.CustomInput
+import com.google.firebase.FirebaseTooManyRequestsException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
 @Composable
 fun LoginScreen(navController: NavController)
 {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-
+    var messageError by remember { mutableStateOf("") }
+    var isError by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -81,7 +88,7 @@ fun LoginScreen(navController: NavController)
         CustomInput(
             label = R.string.label_email,
             value = email,
-            onValueChange = { email = it },
+            onValueChange = { email = it; isError = false },
             placeHolder = R.string.placeholder_email,
             isPassword = false
         )
@@ -91,7 +98,7 @@ fun LoginScreen(navController: NavController)
         CustomInput (
             label = R.string.label_password,
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { password = it; isError = false },
             placeHolder = R.string.placeholder_password,
             isPassword = true
         )
@@ -99,9 +106,54 @@ fun LoginScreen(navController: NavController)
         Spacer(modifier = Modifier.height(50.dp))
 
         CustomButton(
-            onClick = {},
+            onClick = {
+                if(email.isEmpty() || password.isEmpty()){
+                    messageError = "Todos los campos son obligatorios"
+                    isError = true
+                }
+                else{
+                    isError = false
+                    FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                isError = false
+                                navController.navigate("home")
+                            } else {
+                                messageError = when (val exception= task.exception) {
+
+                                    is FirebaseAuthInvalidCredentialsException ->
+                                        "La información de inicio de sesión es incorrecta"
+                                    is FirebaseAuthInvalidUserException -> {
+                                        when (exception.errorCode) {
+                                            "ERROR_USER_DISABLED" ->
+                                                "La cuenta fue deshabilitada, por favor ponte en contacto con un administrador."
+                                            else ->
+                                                "La información de inicio de sesión es incorrecta"
+                                        }
+                                    }
+                                    is FirebaseTooManyRequestsException ->
+                                        "Demasiados intentos. Intenta más tarde"
+                                    else ->
+                                        "Error al iniciar sesión"
+                                }
+                                isError = true
+                            }
+                        }
+                }
+            },
             text = R.string.button_login
         )
+        if (isError) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = messageError,
+                color = Color.Yellow,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
 
         Spacer(modifier = Modifier.height(40.dp))
 
