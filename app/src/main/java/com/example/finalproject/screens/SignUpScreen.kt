@@ -146,7 +146,7 @@ fun SignUpScreen(navController: NavController)
                                         is FirebaseAuthInvalidCredentialsException ->
                                             "El correo no es válido, asegurate de poner el formato correcto."
                                         else ->
-                                            "Error al iniciar sesión"
+                                            "Error al registrar usuario"
                                     }
                                     isError = true
                                     isSuccess  = false

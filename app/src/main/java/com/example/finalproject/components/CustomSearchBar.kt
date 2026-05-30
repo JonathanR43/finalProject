@@ -90,9 +90,10 @@ fun CustomSearchBar(
                                 )
                             )
                         }
+                        innerTextField()
                     }
 
-                    innerTextField()
+
                 }
             }
         )

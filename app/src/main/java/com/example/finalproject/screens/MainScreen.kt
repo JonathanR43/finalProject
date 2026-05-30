@@ -20,17 +20,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.finalproject.R
 import com.example.finalproject.components.CustomSearchBar
 import com.example.finalproject.components.PokemonCard
+import com.example.finalproject.data.model.SimplePokemon
 
 @Composable
-fun MainScreen(navController: NavController)
+fun MainScreen(
+    navController: NavController,
+    viewModel: PokemonViewModel = viewModel()
+)
 {
+    var searchText by remember { mutableStateOf("") }
+
     var pokemonList by remember {
-        mutableStateOf(listOf<Pair<String, String>>())
+        mutableStateOf(listOf<SimplePokemon>())
+    }
+
+    LaunchedEffect(key1 = true)
+    {
+        viewModel.fetchPokemon()
     }
 
     Column(
@@ -53,7 +65,10 @@ fun MainScreen(navController: NavController)
 
         Spacer(modifier = Modifier.height(28.dp))
 
-        CustomSearchBar("") { }
+        CustomSearchBar(
+            searchText,
+            onValueChange = { searchText = it }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -64,10 +79,12 @@ fun MainScreen(navController: NavController)
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            val pokemonList = viewModel.pokemonList
+
             items(pokemonList)
             {
-                pokemonCard ->
-                PokemonCard(name = pokemonCard.first, imageUrl = pokemonCard.second)
+                pokemon ->
+                PokemonCard(pokemon = pokemon)
 
             }
         }

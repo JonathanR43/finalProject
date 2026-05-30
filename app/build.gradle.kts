@@ -44,10 +44,18 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-auth")
 
+    //Add dependency for material icons
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.compose.material:material-icons-extended")
 
+    //Add oficcial Google Splash Screen dependency
     implementation("androidx.core:core-splashscreen:1.1.0-rc01")
+
+    //Add retrofit dependency
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+
+    //Add retrofit json converter dependency
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)

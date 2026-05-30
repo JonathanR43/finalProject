@@ -20,11 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import coil.compose.AsyncImage
 import com.example.finalproject.R
+import com.example.finalproject.data.model.SimplePokemon
+import retrofit2.Retrofit
 
 @Composable
 fun PokemonCard(
-    name: String? = null,
-    imageUrl: String? = null,
+    pokemon: SimplePokemon
 )
 {
     Column(
@@ -34,7 +35,7 @@ fun PokemonCard(
             .clip(RoundedCornerShape(15.dp))
             .fillMaxWidth()
             .height(165.dp)
-            .background(color = Color(0xFF3F93D1))
+            .background(color = Color.White)
             .padding(5.dp)
             .clickable
             {
@@ -42,7 +43,7 @@ fun PokemonCard(
             }
     )
     {
-        if (imageUrl.isNullOrBlank()) {
+        if (pokemon.frontSprite.isNullOrBlank()) {
             Image(
                 painter = painterResource(R.drawable.icon),
                 contentDescription = "Imagen local",
@@ -50,7 +51,7 @@ fun PokemonCard(
             )
         } else {
             AsyncImage(
-                model = imageUrl,
+                model = pokemon.frontSprite,
                 contentDescription = "Imagen de Pokémon",
                 modifier = Modifier.size(100.dp),
                 placeholder = painterResource(R.drawable.icon),
@@ -60,10 +61,10 @@ fun PokemonCard(
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        if(name != null)
+        if(pokemon.name != null)
         {
             Text(
-                name,
+                pokemon.name,
                 textAlign = TextAlign.Center,
                 style = TextStyle(
                     color = Color.Black,
@@ -96,7 +97,10 @@ fun PokemonCard(
         )
 @Composable
 fun PokeCardPreview() {
-    var pokemonName by remember { mutableStateOf("Charizard") }
+    val pokemonDePrueba = SimplePokemon(
+        name = "Pikachu",
+        url = "https://pokeapi.co/api/v2/pokemon/25/"
+    )
 
-    PokemonCard(name = pokemonName)
+    PokemonCard(pokemon = pokemonDePrueba)
 }
