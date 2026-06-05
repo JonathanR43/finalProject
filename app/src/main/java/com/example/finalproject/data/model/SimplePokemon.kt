@@ -1,7 +1,5 @@
 package com.example.finalproject.data.model
 
-import com.google.gson.annotations.SerializedName
-
 data class PokemonListResponse(
     val results: List<SimplePokemon>
 )

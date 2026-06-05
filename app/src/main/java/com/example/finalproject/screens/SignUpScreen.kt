@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -49,7 +51,8 @@ fun SignUpScreen(navController: NavController)
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(0xFFFE4D4D))
-            .padding(horizontal = 49.dp),
+            .padding(horizontal = 49.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     )
     {
@@ -75,7 +78,7 @@ fun SignUpScreen(navController: NavController)
         Spacer(modifier = Modifier.height(50.dp))
 
         Text(
-            "Registrarse",
+            "Sign Up",
             textAlign = TextAlign.Center,
             style = TextStyle(
                 fontWeight = FontWeight.ExtraBold,
@@ -134,19 +137,19 @@ fun SignUpScreen(navController: NavController)
                         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    feedbackMessage = "¡Usuario registrado con éxito! Ya puedes dirigirte a Iniciar Sesión."
+                                    feedbackMessage = "User successfully registered! You can now proceed to log in."
                                     isSuccess = true
                                     isError = false
                                 } else {
                                     feedbackMessage = when (task.exception) {
                                         is FirebaseAuthUserCollisionException ->
-                                            "Este correo ya está registrado."
+                                            "This email is already registered."
                                         is FirebaseAuthWeakPasswordException ->
-                                            "La contraseña es muy débil. Por favor, ingresa al menos 6 caracteres."
+                                            "The password is too weak. Make sure it's at least 6 characters long."
                                         is FirebaseAuthInvalidCredentialsException ->
-                                            "El correo no es válido, asegurate de poner el formato correcto."
+                                            "Invalid email address. Please make sure the format is correct."
                                         else ->
-                                            "Error al registrar usuario"
+                                            "Sign up error"
                                     }
                                     isError = true
                                     isSuccess  = false

@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -48,7 +50,8 @@ fun LoginScreen(navController: NavController)
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(0xFFFE4D4D))
-            .padding(horizontal = 49.dp),
+            .padding(horizontal = 49.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     )
     {
@@ -74,7 +77,7 @@ fun LoginScreen(navController: NavController)
         Spacer(modifier = Modifier.height(96.dp))
 
         Text(
-            "Iniciar Sesión",
+            "Log In",
             textAlign = TextAlign.Center,
             style = TextStyle(
                 fontWeight = FontWeight.ExtraBold,
@@ -108,7 +111,7 @@ fun LoginScreen(navController: NavController)
         CustomButton(
             onClick = {
                 if(email.isEmpty() || password.isEmpty()){
-                    messageError = "Todos los campos son obligatorios"
+                    messageError = "All fields must be fullfilled"
                     isError = true
                 }
                 else{
@@ -122,19 +125,19 @@ fun LoginScreen(navController: NavController)
                                 messageError = when (val exception= task.exception) {
 
                                     is FirebaseAuthInvalidCredentialsException ->
-                                        "La información de inicio de sesión es incorrecta"
+                                        "The login credentials are incorrect"
                                     is FirebaseAuthInvalidUserException -> {
                                         when (exception.errorCode) {
                                             "ERROR_USER_DISABLED" ->
-                                                "La cuenta fue deshabilitada, por favor ponte en contacto con un administrador."
+                                                "This account has been deactivated. Please contact an administrator."
                                             else ->
-                                                "La información de inicio de sesión es incorrecta"
+                                                "The login credentials are incorrect"
                                         }
                                     }
                                     is FirebaseTooManyRequestsException ->
-                                        "Demasiados intentos. Intenta más tarde"
+                                        "Too many attempts. please try again later"
                                     else ->
-                                        "Error al iniciar sesión"
+                                        "Login error"
                                 }
                                 isError = true
                             }

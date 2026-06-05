@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,12 +36,6 @@ fun MainScreen(
     viewModel: PokemonViewModel = viewModel()
 )
 {
-    var searchText by remember { mutableStateOf("") }
-
-    var pokemonList by remember {
-        mutableStateOf(listOf<SimplePokemon>())
-    }
-
     LaunchedEffect(key1 = true)
     {
         viewModel.fetchPokemon()
@@ -49,7 +45,8 @@ fun MainScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(0xFFFE4D4D))
-            .padding(horizontal = 49.dp),
+            .padding(horizontal = 49.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     )
     {
@@ -66,8 +63,8 @@ fun MainScreen(
         Spacer(modifier = Modifier.height(28.dp))
 
         CustomSearchBar(
-            searchText,
-            onValueChange = { searchText = it }
+            viewModel.searchText,
+            onValueChange = { newSeatch -> viewModel.searchText = newSeatch }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -79,12 +76,12 @@ fun MainScreen(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            val pokemonList = viewModel.pokemonList
+            val pokemonList = viewModel.filteredPokemonList
 
             items(pokemonList)
             {
                 pokemon ->
-                PokemonCard(pokemon = pokemon)
+                PokemonCard(pokemon = pokemon, onClick = {navController.navigate("detail/${pokemon.name}")})
 
             }
         }

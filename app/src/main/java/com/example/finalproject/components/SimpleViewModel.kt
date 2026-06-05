@@ -18,6 +18,20 @@ class PokemonViewModel : ViewModel() {
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
+    var searchText by mutableStateOf("")
+
+    //Variable to store a list of Pokémon filtered by the text in the search bar
+    val filteredPokemonList: List<SimplePokemon>
+        get() {
+            return if (searchText.isEmpty()) {
+                pokemonList
+            } else {
+                pokemonList.filter { pokemon ->
+                    pokemon.name.contains(searchText, ignoreCase = true)
+                }
+            }
+        }
+
     fun fetchPokemon() {
         viewModelScope.launch {
             isLoading = true

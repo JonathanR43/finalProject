@@ -1,15 +1,15 @@
 <resources>
     <string name="app_name">PokeWorld</string>
-    <string name="label_email">Correo Electrónico</string>
-    <string name="label_password">Contraseña</string>
-    <string name="placeholder_email">Ejemplo@correo.com</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="placeholder_email">Example@mail.com</string>
     <string name="placeholder_password">********</string>
-    <string name="button_login">Iniciar Sesión</string>
-    <string name="login_footer_no_account">¿No tienes una cuenta? </string>
-    <string name="login_footer_register">Registrate</string>
-    <string name="button_signup">Registrarse</string>
-    <string name="label_confirm_password">Confirmar contraseña</string>
-    <string name="signup_footer_account">¿Ya estas registrado? </string>
-    <string name="signup_footer_login">Iniciar sesión</string>
-    <string name="placeholder_searchBar">Buscar pokémon...</string>
+    <string name="button_login">Log In</string>
+    <string name="login_footer_no_account">You dont have an account?</string>
+    <string name="login_footer_register">Sign Up</string>
+    <string name="button_signup">Sign Up</string>
+    <string name="label_confirm_password">Confirm Password</string>
+    <string name="signup_footer_account">You already have an account? </string>
+    <string name="signup_footer_login">Login</string>
+    <string name="placeholder_searchBar">Search pokemon...</string>
 </resources>

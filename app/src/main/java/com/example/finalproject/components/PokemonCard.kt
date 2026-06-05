@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.finalproject.R
 import com.example.finalproject.data.model.SimplePokemon
@@ -25,7 +26,8 @@ import retrofit2.Retrofit
 
 @Composable
 fun PokemonCard(
-    pokemon: SimplePokemon
+    pokemon: SimplePokemon,
+    onClick: () -> Unit
 )
 {
     Column(
@@ -34,13 +36,10 @@ fun PokemonCard(
         modifier = Modifier
             .clip(RoundedCornerShape(15.dp))
             .fillMaxWidth()
-            .height(165.dp)
+            .fillMaxHeight()
             .background(color = Color.White)
             .padding(5.dp)
-            .clickable
-            {
-
-            }
+            .clickable (onClick = onClick)
     )
     {
         if (pokemon.frontSprite.isNullOrBlank()) {
@@ -64,7 +63,7 @@ fun PokemonCard(
         if(pokemon.name != null)
         {
             Text(
-                pokemon.name,
+                pokemon.name.replaceFirstChar { it.uppercase() },
                 textAlign = TextAlign.Center,
                 style = TextStyle(
                     color = Color.Black,
@@ -102,5 +101,5 @@ fun PokeCardPreview() {
         url = "https://pokeapi.co/api/v2/pokemon/25/"
     )
 
-    PokemonCard(pokemon = pokemonDePrueba)
+    PokemonCard(pokemon = pokemonDePrueba, onClick = {})
 }
