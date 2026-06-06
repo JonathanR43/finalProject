@@ -2,11 +2,12 @@ package com.example.finalproject.data.model
 
 import com.google.gson.annotations.SerializedName
 
+//Single pokemon with details data model
 data class PokemonDetail(
     val id: Int,
     val name: String,
-    val height: Int, // La API lo devuelve en decímetros
-    val weight: Int, // La API lo devuelve en hectogramos
+    val height: Int,
+    val weight: Int,
     val sprites: PokemonSprites,
     val types: List<PokemonTypeSlot>,
     val stats: List<PokemonStatSlot>
