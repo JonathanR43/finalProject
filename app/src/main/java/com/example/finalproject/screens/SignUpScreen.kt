@@ -59,25 +59,25 @@ fun SignUpScreen(navController: NavController)
     )
     {
 
-        Spacer(modifier = Modifier.height(62.dp))
+        Spacer(modifier = Modifier.height(42.dp))
 
         Image(
             painter = painterResource(R.drawable.icon),
             contentDescription = "Imagen local",
             modifier = Modifier
-                .height(75.dp)
-                .width(137.dp),
+                .height(55.dp)
+                .width(117.dp),
         )
 
         Image(
             painter = painterResource(R.drawable.titulo),
             contentDescription = "Imagen local",
             modifier = Modifier
-                .height(89.dp)
+                .height(79.dp)
                 .width(285.dp),
         )
 
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(35.dp))
 
         Text(
             "Sign Up",
@@ -99,7 +99,7 @@ fun SignUpScreen(navController: NavController)
             isPassword = false
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(5.dp))
 
         CustomInput(
             label = R.string.label_email,
@@ -109,7 +109,7 @@ fun SignUpScreen(navController: NavController)
             isPassword = false
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(5.dp))
 
         CustomInput (
             label = R.string.label_password,
@@ -119,7 +119,7 @@ fun SignUpScreen(navController: NavController)
             isPassword = true
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(5.dp))
 
         CustomInput (
             label = R.string.label_confirm_password,
