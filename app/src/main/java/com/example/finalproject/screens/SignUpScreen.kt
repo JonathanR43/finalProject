@@ -36,10 +36,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.auth.userProfileChangeRequest
 
 @Composable
 fun SignUpScreen(navController: NavController)
 {
+    var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
@@ -57,7 +59,7 @@ fun SignUpScreen(navController: NavController)
     )
     {
 
-        Spacer(modifier = Modifier.height(82.dp))
+        Spacer(modifier = Modifier.height(62.dp))
 
         Image(
             painter = painterResource(R.drawable.icon),
@@ -75,7 +77,7 @@ fun SignUpScreen(navController: NavController)
                 .width(285.dp),
         )
 
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         Text(
             "Sign Up",
@@ -87,7 +89,17 @@ fun SignUpScreen(navController: NavController)
             )
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(14.dp))
+
+        CustomInput(
+            label = R.string.label_username,
+            value = username,
+            onValueChange = { username = it; isError = false },
+            placeHolder = R.string.placeholder_username,
+            isPassword = false
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         CustomInput(
             label = R.string.label_email,
@@ -97,7 +109,7 @@ fun SignUpScreen(navController: NavController)
             isPassword = false
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         CustomInput (
             label = R.string.label_password,
@@ -107,7 +119,7 @@ fun SignUpScreen(navController: NavController)
             isPassword = true
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         CustomInput (
             label = R.string.label_confirm_password,
@@ -117,12 +129,12 @@ fun SignUpScreen(navController: NavController)
             isPassword = true
         )
         
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         CustomButton(
             onClick = {
                 when {
-                    email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() -> {
+                    username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() -> {
                         feedbackMessage = "Todos los campos son obligatorios"
                         isError = true
                         isSuccess = false
@@ -137,9 +149,23 @@ fun SignUpScreen(navController: NavController)
                         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    feedbackMessage = "User successfully registered! You can now proceed to log in."
-                                    isSuccess = true
-                                    isError = false
+                                    val user = task.result?.user
+                                    val profileUpdates = userProfileChangeRequest {
+                                        displayName = username
+                                    }
+
+                                    user?.updateProfile(profileUpdates)
+                                        ?.addOnCompleteListener { profileTask ->
+                                            if (profileTask.isSuccessful) {
+                                                feedbackMessage = "User successfully registered! You can now proceed to log in."
+                                                isSuccess = true
+                                                isError = false
+                                            } else {
+                                                feedbackMessage = "Account created, but failed to save username."
+                                                isError = false
+                                                isSuccess = true
+                                            }
+                                        }
                                 } else {
                                     feedbackMessage = when (task.exception) {
                                         is FirebaseAuthUserCollisionException ->
