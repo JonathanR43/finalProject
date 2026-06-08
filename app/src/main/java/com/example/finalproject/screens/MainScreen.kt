@@ -11,17 +11,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,17 +26,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.finalproject.R
+import com.example.finalproject.components.CustomProfileButton
 import com.example.finalproject.components.CustomSearchBar
 import com.example.finalproject.components.PokemonCard
-import com.example.finalproject.data.model.SimplePokemon
+import com.example.finalproject.components.ProfileDialog
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun MainScreen(
     navController: NavController,
+    username: String,
+    email: String,
     viewModel: PokemonViewModel = viewModel()
 )
 {
+    var showProfile by remember { mutableStateOf(false) }
     LaunchedEffect(key1 = true)
     {
         viewModel.fetchPokemon()
@@ -53,8 +50,7 @@ fun MainScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(0xFFFE4D4D))
-            .padding(horizontal = 24.dp)
-            .verticalScroll(rememberScrollState()),
+            .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     )
     {
@@ -72,24 +68,11 @@ fun MainScreen(
                     .width(220.dp)
             )
 
-            IconButton(
-                onClick = {
-                    FirebaseAuth.getInstance().signOut()
-                    navController.navigate("login"){
-                        popUpTo("login") {
-                            inclusive = true
-                        }
-                    }
-                },
+            CustomProfileButton(
+                onClick = { showProfile = true },
                 modifier = Modifier.align(Alignment.CenterEnd)
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                    contentDescription = "Cerrar sesión",
-                    tint = Color.White,
-                    modifier = Modifier.size(30.dp)
-                )
-            }
+            )
+
         }
 
         Spacer(modifier = Modifier.height(28.dp))
@@ -117,8 +100,24 @@ fun MainScreen(
 
             }
         }
-
     }
+    if (showProfile) {
+        ProfileDialog(
+            onDismiss = { showProfile = false },
+            username = username,
+            email = email,
+            onLogout = {
+                showProfile = false
+                FirebaseAuth.getInstance().signOut()
+                navController.navigate("login") {
+                    popUpTo("login") {
+                        inclusive = true
+                    }
+                }
+            }
+        )
+    }
+
 }
 
 @Preview (device = "spec:width=440dp,height=956dp,dpi=420")
@@ -126,5 +125,9 @@ fun MainScreen(
 fun MainScreenPreview()
 {
     val navController = rememberNavController()
-    MainScreen(navController = navController)
+    MainScreen(
+        navController = navController,
+        username = "Entrenador de Prueba",
+        email = "preview@pokemon.com"
+    )
 }

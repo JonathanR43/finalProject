@@ -10,6 +10,7 @@ import com.example.finalproject.screens.DetailScreen
 import com.example.finalproject.screens.LoginScreen
 import com.example.finalproject.screens.MainScreen
 import com.example.finalproject.screens.SignUpScreen
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun AppNavigation(){
@@ -26,7 +27,15 @@ fun AppNavigation(){
             SignUpScreen(navController)
         }
         composable("home") {
-            MainScreen(navController)
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            val name = currentUser?.displayName ?: "Entrenador"
+            val mail = currentUser?.email ?: "Sin correo"
+
+            MainScreen(
+                navController = navController,
+                username = name,
+                email = mail
+            )
         }
         composable(
             route = "detail/{pokemonName}",
@@ -36,8 +45,13 @@ fun AppNavigation(){
             backStackEntry ->
             val pokemonName = backStackEntry.arguments?.getString("pokemonName") ?: "Pikachu"
 
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            val name = currentUser?.displayName ?: "Entrenador"
+            val mail = currentUser?.email ?: "Sin correo"
             DetailScreen(
                 navController = navController,
+                username = name,
+                email = mail,
                 pokemonName = pokemonName
             )
         }

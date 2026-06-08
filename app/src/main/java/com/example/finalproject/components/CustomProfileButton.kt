@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.ArrowBackIosNew
@@ -23,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CustomBackButton(
+fun CustomProfileButton(
     onClick: ()-> Unit,
     modifier: Modifier = Modifier)
 {
@@ -37,9 +38,10 @@ fun CustomBackButton(
         contentAlignment = Alignment.Center
     )
     {
+
         Icon(
-            imageVector = Icons.Filled.ArrowBackIosNew,
-            contentDescription = "Volver",
+            imageVector = Icons.Filled.AccountCircle,
+            contentDescription = "Ver perfil",
             tint = Color.White,
             modifier = Modifier.size(40.dp)
         )
@@ -48,7 +50,7 @@ fun CustomBackButton(
 
 @Preview
 @Composable
-fun CustomBackButtonPreview()
+fun CustomProfileButtonPreview()
 {
-    CustomBackButton (onClick = {})
+    CustomProfileButton (onClick = {})
 }

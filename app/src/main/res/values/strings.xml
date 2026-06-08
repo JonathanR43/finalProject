@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">PokeWorld</string>
+    <string name="label_username">Username</string>
     <string name="label_email">Email</string>
     <string name="label_password">Password</string>
+    <string name="placeholder_username">Ash Ketchum</string>
     <string name="placeholder_email">Example@mail.com</string>
     <string name="placeholder_password">********</string>
     <string name="button_login">Log In</string>
@@ -12,4 +14,5 @@
     <string name="signup_footer_account">You already have an account? </string>
     <string name="signup_footer_login">Login</string>
     <string name="placeholder_searchBar">Search pokemon...</string>
+    <string name="button_logout">log out</string>
 </resources>

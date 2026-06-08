@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +22,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,21 +39,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.example.finalproject.R
 import com.example.finalproject.components.CustomBackButton
-import com.example.finalproject.components.CustomButton
+import com.example.finalproject.components.CustomProfileButton
+import com.example.finalproject.components.ProfileDialog
 import com.example.finalproject.components.StatRow
 import com.example.finalproject.components.TypeCard
-import com.example.finalproject.data.model.SimplePokemon
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun DetailScreen(
     navController: NavController,
+    username: String,
+    email: String,
     pokemonName: String,
     viewModel: PokemonDetailViewModel = viewModel())
 {
+    var showProfile by remember { mutableStateOf(false) }
     LaunchedEffect(key1 = pokemonName) {
         viewModel.fetchPokemonDetail(pokemonName)
     }
@@ -70,17 +76,15 @@ fun DetailScreen(
     {
         Spacer(modifier = Modifier.height(38.dp))
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp)
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
         )
         {
             CustomBackButton(
-                onClick = {navController.navigate("home")}
+                onClick = {navController.navigate("home")},
+                modifier = Modifier.align(Alignment.CenterStart)
             )
-
-            Spacer(modifier = Modifier.width(50.dp))
 
             Image(
                 painterResource(R.drawable.titulo),
@@ -88,6 +92,11 @@ fun DetailScreen(
                 modifier = Modifier
                     .height(68.dp)
                     .width(220.dp)
+            )
+
+            CustomProfileButton(
+                onClick = { showProfile = true },
+                modifier = Modifier.align(Alignment.CenterEnd)
             )
         }
 
@@ -319,6 +328,22 @@ fun DetailScreen(
                 }
             }
         }
+    }
+    if (showProfile) {
+        ProfileDialog(
+            onDismiss = { showProfile = false },
+            username = username,
+            email = email,
+            onLogout = {
+                showProfile = false
+                FirebaseAuth.getInstance().signOut()
+                navController.navigate("login") {
+                    popUpTo("login") {
+                        inclusive = true
+                    }
+                }
+            }
+        )
     }
 }
 
